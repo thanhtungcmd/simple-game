@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.tungbt.goldminer.actor.PlayButton;
 
-import java.util.Random;
-
 public class MainScreen implements Screen {
 
     Game game;
@@ -26,14 +24,11 @@ public class MainScreen implements Screen {
         // Global
         camera = new OrthographicCamera(1280, 720);
         stage = new Stage();
-        Random random = new Random();
 
         // Play button
         test = new PlayButton[100];
-        for(int i = 0; i < 1; i++) {
+        for(int i = 0; i < 10; i++) {
             test[i] = new PlayButton(this.game);
-            test[i].setPosition(random.nextInt(Gdx.graphics.getWidth() - (int) test[i].getWidth())
-                    , random.nextInt(Gdx.graphics.getHeight() - (int) test[i].getHeight()));
             stage.addActor(test[i]);
         }
 

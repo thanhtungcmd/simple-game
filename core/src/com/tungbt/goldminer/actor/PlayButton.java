@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
+import java.util.Random;
+
 public class PlayButton extends Actor {
 
     TextureRegion textureRegion = new TextureRegion(new Texture("images/play.png"));
@@ -25,6 +27,10 @@ public class PlayButton extends Actor {
                 textureRegion.getRegionHeight());
 
         setTouchable(Touchable.enabled);
+
+        Random random = new Random();
+        setPosition(random.nextInt(Gdx.graphics.getWidth() - (int) getWidth())
+                , random.nextInt(Gdx.graphics.getHeight() - (int) getHeight()));
 
         this.addListener(new InputListener() {
             @Override
