@@ -3,24 +3,19 @@ package com.tungbt.goldminer.screen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.tungbt.goldminer.actor.PlayButton;
 
+import java.util.Random;
+
 public class MainScreen implements Screen {
 
-    SpriteBatch batch;
     Game game;
     OrthographicCamera camera;
     Stage stage;
-    // Background
-    Texture img;
-    TextureRegion background;
-    // Play Button
-    PlayButton playButton;
+    PlayButton[] test;
 
     public MainScreen(Game game) {
         this.game = game;
@@ -30,37 +25,26 @@ public class MainScreen implements Screen {
     public void show() {
         // Global
         camera = new OrthographicCamera(1280, 720);
-        batch = new SpriteBatch();
         stage = new Stage();
-        // Background
-        img = new Texture("images/menubg.png");
-        img.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
-        background = new TextureRegion(img, img.getWidth()*5, img.getHeight()*3);
-        // Play Button
-        // Sprite playButton = new Sprite(new Texture("images/play.png"));
-        playButton = new PlayButton(this.game);
-        stage.addActor(playButton);
+        Random random = new Random();
+
+        // Play button
+        test = new PlayButton[100];
+        for(int i = 0; i < 1; i++) {
+            test[i] = new PlayButton(this.game);
+            test[i].setPosition(random.nextInt(Gdx.graphics.getWidth() - (int) test[i].getWidth())
+                    , random.nextInt(Gdx.graphics.getHeight() - (int) test[i].getHeight()));
+            stage.addActor(test[i]);
+        }
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-        batch.begin();
-        batch.draw(background, 0, 0);
-        batch.end();
-
-        stage.act();
-        this.updateButtonTouched();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-    }
-
-    public void updateButtonTouched(){
-        if (playButton != null) {
-            if (playButton.checkClick(Gdx.input.getX(), Gdx.input.getY())) {
-                Gdx.app.log("Click X", String.valueOf(Gdx.input.getX()));
-                Gdx.app.log("Click Y", String.valueOf(Gdx.input.getY()));
-                game.setScreen(new PlayScreen(this.game));
-            }
-        }
     }
 
     @Override
@@ -85,8 +69,6 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose () {
-        batch.dispose();
-        img.dispose();
         stage.dispose();
     }
 
